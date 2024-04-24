@@ -1,4 +1,4 @@
-autoit
+pyautoit
 keyboard
 pyautogui
 pytesseract
