@@ -1,6 +1,10 @@
 # Miners-Haven-Bot
 python script that utilizes Tesseract to extract text from roblox to automate rebirthing and placing layouts
 
+# Features
+- Automatically rebirths when you have enough money (does not account for life skipping)
+- Automatically will place layouts (based on configuration during setup)
+
 # Disclaimer
 THIS SHIT IS VERY BUGGY!! (and only tested on Windows, it has to be changed in order to run on any other OS's probably)
 
