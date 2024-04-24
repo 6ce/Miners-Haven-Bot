@@ -1,0 +1,5 @@
+autoit
+keyboard
+pyautogui
+pytesseract
+pillow
