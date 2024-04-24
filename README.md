@@ -6,7 +6,8 @@ python script that utilizes Tesseract to extract text from roblox to automate re
 - Automatically will place layouts (based on configuration during setup)
 
 # Disclaimer
-THIS SHIT IS VERY BUGGY!! (and only tested on Windows, it has to be changed in order to run on any other OS's probably)
+ - It's buggy. (and only tested on Windows, it has to be changed in order to run on any other OS's probably)
+ - No other anti-afk software is required
 
 # Setup
 - Install [Python](https://www.python.org/)
