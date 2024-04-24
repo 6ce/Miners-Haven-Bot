@@ -13,7 +13,7 @@ THIS SHIT IS VERY BUGGY!! (and only tested on Windows, it has to be changed in o
 - Install [Tesseract](https://github.com/UB-Mannheim/tesseract/wiki)
 - Go into your installation directory, and run the command `pip install -r requirements.txt`
 - Configure `haven.py` as it tells you to
-- Once you load into the game, enable "Scientific Notation" in the game settings
+- Once you load into Miner's Haven, enable "Scientific Notation" in the game settings
 - Once configured and ingame, run `python main.py`
 
 # Usage
