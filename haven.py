@@ -102,6 +102,7 @@ class Haven:
     def imageToString(self, imageData: str, responseIsNumber: bool, prefix="THE_PREFIX_LOL") -> str:
         string = pytesseract.image_to_string(imageData).replace(prefix, "")
 
+        # account for characters in response that are similar to numbers
         if responseIsNumber:
             string = string.replace("er", "e+")
             string = string.replace("b", "6")
