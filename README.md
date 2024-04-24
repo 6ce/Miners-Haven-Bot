@@ -6,6 +6,7 @@ THIS SHIT IS BUGGY!!
 
 # Setup
 - Install [Python](https://www.python.org/)
+- Install [Tesseract](https://github.com/UB-Mannheim/tesseract/wiki)
 - Go into your installation directory, and run the command `pip install -r requirements.txt`
 - Configure `haven.py` as it tells you to
 - Once configured and ingame, run `python main.py`
