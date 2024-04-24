@@ -13,3 +13,4 @@ THIS SHIT IS BUGGY!! (and only tested on Windows, it has to be changed in order 
 
 # Usage
 - Hold CTRL + Q to stop the script from running
+- While running, make sure nothing covers up your game
