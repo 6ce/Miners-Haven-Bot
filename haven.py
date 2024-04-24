@@ -104,6 +104,7 @@ class Haven:
 
         # account for characters in response that are similar to numbers
         if responseIsNumber:
+            # i know i couldve use a list, i probably will revise and do that
             string = string.replace("er", "e+")
             string = string.replace("b", "6")
             string = string.replace("B", "8")
