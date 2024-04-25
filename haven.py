@@ -11,16 +11,16 @@ from PIL import Image
 
 LAYOUTS = [ # whether or not to load each layout
     # if the value is True, the layout will load when layout cost from below is reached, otherwise it will not load
-    True, # layout 1
+    False, # layout 1
     False, # layout 2
-    True # layout 3
+    False # layout 3
 ]
 COSTS = [ # how much each layout costs (roughly)
     # the number should be in scientific notation (https://minershaven.fandom.com/wiki/Cash_Suffixes)
     # if the number is incorrect, it may break the script
     0.0, # layout 1
     0.0, # layout 1
-    1.0e+24 # layout 1
+    0.0 # layout 1
 ]
 
 #### CONFIGURE THESE ABOVE AS INSTRUCTED
