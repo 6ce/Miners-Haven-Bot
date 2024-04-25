@@ -11,16 +11,16 @@ from PIL import Image
 
 LAYOUTS = [ # whether or not to load each layout
     # if the value is True, the layout will load when layout cost from below is reached, otherwise it will not load
-    False, # layout 1
+    True, # layout 1
     False, # layout 2
-    False # layout 3
+    True # layout 3
 ]
 COSTS = [ # how much each layout costs (roughly)
     # the number should be in scientific notation (https://minershaven.fandom.com/wiki/Cash_Suffixes)
     # if the number is incorrect, it may break the script
     0.0, # layout 1
     0.0, # layout 1
-    0.0 # layout 1
+    1.0e+24 # layout 1
 ]
 
 #### CONFIGURE THESE ABOVE AS INSTRUCTED
@@ -48,11 +48,11 @@ class Haven:
         self.rebornConfirmButtons = [ # buttons to confirm you wanna reborn
             [ # 2
                 [1060, 510],
-                [970, 500, 30, 15]
+                [970, 500, 150, 20]
             ],
             [
                 [850, 510],
-                [770, 500, 30, 15]
+                [770, 500, 150, 20]
             ]
         ]
 
@@ -72,7 +72,7 @@ class Haven:
         self.rebornCoords = [940, 490, 220, 35] # reborn price label
         self.rebornPrefix = "[ Reborn $"
         self.rebornPath = "images/reborn.png"
-        self.minRebornPrice = 25e+18 # 25Qn
+        self.minRebornPrice = 25.0e+18 # 25Qn
 
         # path to tesseract ocr
         self.tesseractPath = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
@@ -102,9 +102,7 @@ class Haven:
     def imageToString(self, imageData: str, responseIsNumber: bool, prefix="THE_PREFIX_LOL") -> str:
         string = pytesseract.image_to_string(imageData).replace(prefix, "")
 
-        # account for characters in response that are similar to numbers
         if responseIsNumber:
-            # i know i couldve used a list, i probably will revise and do that
             string = string.replace("er", "e+")
             string = string.replace("b", "6")
             string = string.replace("B", "8")
@@ -123,12 +121,6 @@ class Haven:
             string = string.replace("t", "7")
 
         return string.replace("\n", "")
-
-    # gets the rgb values of a point in an image
-    def getColor(self, imagePath: str, coords: [int, int]) -> (int, int, int):
-        x, y = coords
-        image = self.openImage(imagePath)
-        return image.getpixel((x, y))
 
     # updates the input screenshot (so we can off read it later)
     def updateScreenshot(self, imagePath: str, coords: list):
@@ -176,10 +168,10 @@ class Haven:
         self.updateScreenshot(self.confirmPath1, confirm1[1])
         self.updateScreenshot(self.confirmPath2, confirm2[1])
 
-        r1, g1, b1 = self.getColor(self.confirmPath1, (0, 0))
-        r2, g2, b2 = self.getColor(self.confirmPath2, (0, 0))
+        image1 = self.openImage(self.confirmPath1)
+        text1 = self.imageToString(image1, False)
 
-        return confirm1[0] if r1 > r2 else confirm2[0]
+        return confirm1[0] if text1.lower() == "yes" else confirm2[0]
 
     # performs a rebirth
     def doRebirth(self):
@@ -208,7 +200,7 @@ class Haven:
     def loadLayouts(self):        
         while not self.isMenuOpen(self.layoutsPath, self.layoutsCoords, "layouts"):
             if not self.isMenuOpen(self.settingsPath, self.settingsCoords, "settings"):
-                output("REBORN: opening settings menu")
+                output("MAIN: opening settings menu")
                 self.click(self.settingButtonCoords)
                 time.sleep(0.5) # wait for settings to open
 
@@ -246,7 +238,7 @@ class Haven:
             cash = self.getCashAmount()
             price = self.getRebornPrice()
 
-            updateTitle(f"Magnet's Miner's Haven Bot - CASH: ${cash} - REBORN PRICE: ${price}")
+            updateTitle(f"Miner's Haven Bot - CASH: ${cash} - REBORN PRICE: ${price}")
 
             if not self.layoutsLoaded:
                 self.loadLayouts()
