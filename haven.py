@@ -166,7 +166,6 @@ class Haven:
         confirm1 = self.rebornConfirmButtons[0]
         confirm2 = self.rebornConfirmButtons[1]
         self.updateScreenshot(self.confirmPath1, confirm1[1])
-        self.updateScreenshot(self.confirmPath2, confirm2[1])
 
         image1 = self.openImage(self.confirmPath1)
         text1 = self.imageToString(image1, False)
