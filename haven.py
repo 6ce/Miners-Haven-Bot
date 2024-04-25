@@ -220,7 +220,7 @@ class Haven:
             doLoad = LAYOUTS[layout]
             requiredCash = COSTS[layout]
 
-            while self.getCashAmount() <= requiredCash:
+            while self.getCashAmount() < requiredCash:
                 output(f"LAYOUTS: not enough cash for layout: {layout + 1}")
                 time.sleep(0.1)
 
