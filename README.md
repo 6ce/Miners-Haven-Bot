@@ -15,6 +15,7 @@ python script that utilizes Tesseract to extract text from roblox to automate re
 - Go into your installation directory, and run the command `pip install -r requirements.txt`
 - Configure `haven.py` as it tells you to
 - Once you load into Miner's Haven, enable "Scientific Notation" in the game settings
+- Make sure your game is in fullscreen mode
 - Once configured and ingame, run `python main.py`
 
 # Usage
