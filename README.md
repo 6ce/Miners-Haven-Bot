@@ -20,7 +20,5 @@ python script that utilizes Tesseract to extract text from roblox to automate re
 
 # Usage
 - Hold CTRL + Q to stop the script from running
-- While running, make sure nothing covers up your game
-
-# Showcase
-https://streamable.com/ewsstm
+- While script is running, make sure nothing covers up your game
+- [Showcase](https://streamable.com/ewsstm)
