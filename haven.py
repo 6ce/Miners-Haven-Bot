@@ -9,13 +9,22 @@ from PIL import Image
 
 #### CONFIGURE THESE BELOW AS INSTRUCTED
 
-LAYOUTS = [ # whether or not to load each layout
+# how many life skips are required for the script to rebirth
+MIN_SKIPS = 0
+
+# the max amount of time in which a life should take (if it's been longer than this number, it will attempt to rebirth)
+MAX_TIME = 120
+
+# whether or not to load each layout
+LAYOUTS = [
     # if the value is True, the layout will load when layout cost from below is reached, otherwise it will not load
-    False, # layout 1
+    True, # layout 1
     False, # layout 2
     False # layout 3
 ]
-COSTS = [ # how much each layout costs (roughly)
+
+# how much each layout costs
+COSTS = [
     # the number should be in scientific notation (https://minershaven.fandom.com/wiki/Cash_Suffixes)
     # if the number is incorrect, it may break the script
     0.0, # layout 1
@@ -23,7 +32,7 @@ COSTS = [ # how much each layout costs (roughly)
     0.0 # layout 1
 ]
 
-#### CONFIGURE THESE ABOVE AS INSTRUCTED
+#### CONFIGURE THESE ABOVE AS INSTRUCTED (DONT EDIT BELOW UNLESS U KNOW WHAT UR DOING)
 
 def updateTitle(title: str):
     os.system(f"title {title}")
@@ -60,6 +69,9 @@ class Haven:
         self.confirmPath2 = "images/confirm_2.png"
 
         # x, y, width, height
+        self.skipsCoords = [1060, 400, 86, 22] # label of life skips amount
+        self.skipsPath = "images/skips.png"
+
         self.settingsCoords = [710, 235, 190, 35] # title of settings ui
         self.layoutsCoords = [610, 240, 195, 30] # title of layouts ui
         self.settingsPath = "images/settings.png"
@@ -120,7 +132,7 @@ class Haven:
             string = string.replace("T", "7")
             string = string.replace("t", "7")
 
-        return string.replace("\n", "")
+        return string.strip()
 
     # updates the input screenshot (so we can off read it later)
     def updateScreenshot(self, imagePath: str, coords: list):
@@ -154,18 +166,39 @@ class Haven:
             return float(text)
         except:
             return 0.0
+    
+    # gets the amount of lifeskips
+    def getLifeSkips(self) -> float:
+        try:
+            self.updateScreenshot(self.skipsPath, self.skipsCoords)
+            image = self.openImage(self.skipsPath)
+            text = self.imageToString(image, True)
+            return float(text[0])
+        except:
+            return 0.0
 
     # gets whether or not you're able to rebirth:
-    # (if you have atleast 25Qn, if the input rebornPrice is atleast 25Qn)
+    # (if you have atleast 25Qn and if the input rebornPrice is atleast 25Qn)
+    # (if the current amount of lives you will skip is less than the minimum amount)
     # (if your input cash amount is atleast the input reborn price)
     def canRebirth(self, cashAmount: float, rebornPrice: float) -> bool:
-        return (cashAmount >= self.minRebornPrice) and (rebornPrice >= self.minRebornPrice) and (cashAmount >= rebornPrice)
+        lifeSkips = self.getLifeSkips()
+        if cashAmount < self.minRebornPrice:
+            return False
+        elif rebornPrice < self.minRebornPrice:
+            return False
+        elif lifeSkips < MIN_SKIPS:
+            return False
+        elif cashAmount < rebornPrice:
+            return False
+        return True
 
     # gets the coordinates of the yes confirmation button for rebirthing
     def getYesRebirthButton(self):
         confirm1 = self.rebornConfirmButtons[0]
         confirm2 = self.rebornConfirmButtons[1]
         self.updateScreenshot(self.confirmPath1, confirm1[1])
+        self.updateScreenshot(self.confirmPath2, confirm2[1])
 
         image1 = self.openImage(self.confirmPath1)
         text1 = self.imageToString(image1, False)
@@ -212,6 +245,8 @@ class Haven:
             requiredCash = COSTS[layout]
 
             while self.getCashAmount() < requiredCash:
+                if requiredCash == 0:
+                    break
                 output(f"LAYOUTS: not enough cash for layout: {layout + 1}")
                 time.sleep(0.1)
 
@@ -234,15 +269,17 @@ class Haven:
                 if not self.isMenuOpen(self.layoutsPath, self.layoutsCoords, "layouts") or self.layoutsLoaded:
                     self.click(self.settingButtonCoords)
             
+            elapsed = time.time() - self.lastRebirthTime
             cash = self.getCashAmount()
             price = self.getRebornPrice()
+            skips = self.getLifeSkips()
 
-            updateTitle(f"Miner's Haven Bot - CASH: ${cash} - REBORN PRICE: ${price}")
+            updateTitle(f"MH Bot - CASH: ${cash} - REBORN PRICE: ${price} - SKIPS: {skips} - TIME ELAPSED: {int(elapsed)}")
 
             if not self.layoutsLoaded:
                 self.loadLayouts()
 
-            if (self.canRebirth(cash, price) or (time.time() - self.lastRebirthTime) >= 90) and self.layoutsLoaded:
+            if (self.canRebirth(cash, price) or (elapsed) >= MAX_TIME) and self.layoutsLoaded:
                 self.doRebirth()
             elif not self.canRebirth(cash, price):
                 output("REBORN: not enough cash for rebirth")
