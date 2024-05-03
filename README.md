@@ -1,5 +1,5 @@
 # Miners Haven Bot
-Python script that utilizes Tesseract to extract text from roblox to automate rebirthing and placing layouts
+Python script that utilizes Tesseract to extract text from Roblox to automate rebirthing and placing layouts
 
 # Features
 - Automatically rebirths when you have enough money (will account life skipping as inputted in the `haven.py` file)
