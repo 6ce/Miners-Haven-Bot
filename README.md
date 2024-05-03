@@ -2,7 +2,7 @@
 python script that utilizes Tesseract to extract text from roblox to automate rebirthing and placing layouts
 
 # Features
-- Automatically rebirths when you have enough money (does not account for life skipping)
+- Automatically rebirths when you have enough money (will account life skipping as inputted in the `haven.py` file)
 - Automatically will place layouts (based on configuration during setup)
 
 # Disclaimer
